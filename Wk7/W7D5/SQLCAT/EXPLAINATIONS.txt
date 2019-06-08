@@ -1,0 +1,147 @@
+QUERY PLAN                       
+-------------------------------------------------------
+ Seq Scan on cats  (cost=0.00..12.50 rows=1 width=362)
+   Filter: ((name)::text = 'ivy'::text)
+
+---------------- find all toys wthat belong to a particular cat---
+
+
+  meowtime-# from toys 
+meowtime-# join cattoys on cattoys.toy_id = toys.id
+meowtime-# join cats on cattoys.cat_id = cats.id;
+                                QUERY PLAN                                 
+---------------------------------------------------------------------------
+ Hash Join  (cost=31.25..72.55 rows=2040 width=618)
+   Hash Cond: (cattoys.cat_id = cats.id)
+   ->  Hash Join  (cost=16.75..52.58 rows=2040 width=256)
+         Hash Cond: (cattoys.toy_id = toys.id)
+         ->  Seq Scan on cattoys  (cost=0.00..30.40 rows=2040 width=12)
+         ->  Hash  (cost=13.00..13.00 rows=300 width=244)
+               ->  Seq Scan on toys  (cost=0.00..13.00 rows=300 width=244)
+   ->  Hash  (cost=12.00..12.00 rows=200 width=362)
+         ->  Seq Scan on cats  (cost=0.00..12.00 rows=200 width=362)
+
+
+
+
+EXPLAIN 
+SELECT
+cats.name, toys.name 
+FROM
+toys 
+JOIN 
+cattoys ON toys.id = cattoys.toy_id
+JOIN 
+cats ON cats.id = cattoys.cat_id
+WHERE
+cats.color = 'black'
+;
+
+   QUERY PLAN    FOR SELECTING TOYS WITH SAME COLOR                              
+------------------------------------------------------------------------------
+ Nested Loop  (cost=12.66..50.26 rows=10 width=236)
+   ->  Hash Join  (cost=12.51..48.38 rows=10 width=122)
+         Hash Cond: (cattoys.cat_id = cats.id)
+         ->  Seq Scan on cattoys  (cost=0.00..30.40 rows=2040 width=8)
+         ->  Hash  (cost=12.50..12.50 rows=1 width=122)
+               ->  Seq Scan on cats  (cost=0.00..12.50 rows=1 width=122)
+                     Filter: ((color)::text = 'black'::text)
+   ->  Index Scan using toys_pkey on toys  (cost=0.15..0.19 rows=1 width=122)
+         Index Cond: (id = cattoys.toy_id)
+
+
+
+
+EXPLAIN
+SELECT
+    toys.name
+FROM
+    toys
+    JOIN
+    cattoys ON toys.id = cattoys.toy_id
+    JOIN
+    cats ON cats.id = cattoys.cat_id
+WHERE
+cats.breed = 'fatcat'
+;
+
+   QUERY PLAN                                  
+------------------------------------------------------------------------------
+ Nested Loop  (cost=12.66..50.26 rows=10 width=236)
+   ->  Hash Join  (cost=12.51..48.38 rows=10 width=122)
+         Hash Cond: (cattoys.cat_id = cats.id)
+         ->  Seq Scan on cattoys  (cost=0.00..30.40 rows=2040 width=8)
+         ->  Hash  (cost=12.50..12.50 rows=1 width=122)
+               ->  Seq Scan on cats  (cost=0.00..12.50 rows=1 width=122)
+                     Filter: ((breed)::text = 'fatcat'::text)
+   ->  Index Scan using toys_pkey on toys  (cost=0.15..0.19 rows=1 width=122)
+         Index Cond: (id = cattoys.toy_id)
+
+
+
+EXPLAIN 
+
+Update 
+ cats 
+SET 
+  name = 'spotthecat'
+WHERE 
+  name = 'sam';
+
+         QUERY PLAN       UPDATING CAT                    
+-------------------------------------------------------------
+ Update on cats  (cost=0.00..12.50 rows=1 width=368)
+   ->  Seq Scan on cats  (cost=0.00..12.50 rows=1 width=368)
+         Filter: ((name)::text = 'sam'::text)
+
+
+
+
+EXPLAIN 
+
+DELETE
+FROM 
+    cats
+WHERE 
+    name = 'Garfield';
+
+QUERY PLAN           DELETE CAT                 
+-----------------------------------------------------------
+ Delete on cats  (cost=0.00..12.50 rows=1 width=6)
+   ->  Seq Scan on cats  (cost=0.00..12.50 rows=1 width=6)
+         Filter: ((name)::text = 'Garfield'::text)
+
+
+
+
+
+
+EXPLAIN 
+INSERT INTO
+    cattoys
+    (cat_id, toy_id)
+VALUES
+    ((SELECT
+        id
+      FROM
+        cats
+      WHERE 
+        name = 'sam'),
+      (SELECT
+         id
+       FROM
+         toys
+       WHERE 
+      toys.name = 'toyjerry')
+      );
+
+         QUERY PLAN    INSERTING INTO CATTOYS                         
+-------------------------------------------------------------
+ Insert on cattoys  (cost=26.25..26.27 rows=1 width=12)
+   InitPlan 1 (returns $0)
+     ->  Seq Scan on cats  (cost=0.00..12.50 rows=1 width=4)
+           Filter: ((name)::text = 'sam'::text)
+   InitPlan 2 (returns $1)
+     ->  Seq Scan on toys  (cost=0.00..13.75 rows=2 width=4)
+           Filter: ((name)::text = 'toyjerry'::text)
+   ->  Result  (cost=0.00..0.01 rows=1 width=12)
