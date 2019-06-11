@@ -1,0 +1,125 @@
+RDBMS - Relations Data Base Management System
+
+- Relataional Data sql tables
+
+---  Data Definition Language  (DDL)
+  * descrbies structure of the language
+  * Used to build tables
+      ex. create table
+      ex. drop table
+
+
+
+
+--- Data Manipulation Language (DML)
+  * allows use to add edit data in table
+    ex.
+    select
+    insert
+    update
+    delete
+
+--- Building a data base
+  *exs
+
+
+file name = import_db.sql
+
+
+ CREATE TABLE plays (
+    id INTEGER PRIMARY KEY,
+    title TEXT NOT NULL, (#NOT NULL defines title is not optional, cannot be null)
+    year INTEGER,
+    playwrite_id INTEGER,
+
+    FOREGIN KEY (playwrite_id) REFERENCES playwriteghts(id)
+ );
+
+
+ CREATE TABLE plaaywrights(
+    id INTEGER PRIMARY KEY,
+    name TEXT NOT NULL,
+    birth_year INTEGER
+
+ );
+
+
+INSERT INTO
+  playwrits(name, birth_year)
+VALUEs
+  ('Arthuer Miller', 1915),
+  ('Eugener O''Neill', 1888);
+
+
+INSERT INTO
+  plays (title, year, playwritght_id)
+VALUES
+  ('All My Sons', 1947, (SELECT id FROM playwrights WHERE name = 'Arthur Miller')),
+  ('Long Day''s Journery INto NIght', 1956, (SELECT id FROM playwrights WHERE name = 'Eugene O''Neill));
+
+  ## how to import data into sql lite
+
+  1. go to the directory where the sql file is located at
+  2. cat import_db.sql | sqllite3 plays.db
+           #db file name   #sqllite  #naming the new db name
+
+  ## working with sqllite3
+
+  1. start with sqlite3 plays.db
+                         #name of db
+  ## sqllite3 commands
+    .table
+      *shows the tables the database has
+    .schema
+      *shows the schema of the database
+
+
+  ------ ORM Object Relational Mapping
+
+   defining ruby methods that will make reviewing data a lot easier
+
+   class Play
+     ::all
+     def initialize
+
+
+
+
+    end
+
+
+
+ex.
+
+require 'sqlite3'
+require 'singleton'
+
+
+class PlayDBConnection < SQLite3::database
+ include Singleton
+
+ def initalize
+ super('plays.db')
+ self.type_translation = true
+ self.results_as_hash = true
+ end
+
+end
+
+class Play
+  def self.all
+   data = PlayDBConnection.instance.execute("SELECT * FROM plays")
+   data.map { |datum| Play.new(datum) }
+  end
+
+  def initialize(options)
+     @id = options['id']
+     @titile = options['title']
+     @year = options['year']
+     @playwright_id = options['playwright_id']
+  end
+
+
+  def create
+     raise "#{self} already in database" if @id
+     Play 
