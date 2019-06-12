@@ -1,0 +1,34 @@
+# how to create new rails project
+
+
+terminal
+
+rails new DoggyDatCare -d=postgresql # tells  the computer to get data from PSQL
+
+
+rails has 3 environment ,production, developemnt, test
+
+
+
+## migration
+ lets us write in ruby to mutate database
+
+ex
+
+terminal  -> bundle esxec rails generate migration createDogs # syntax for creating table
+   bundle exec rails g migration createToys
+   bundle exec rails db:migrate:status = shows migration status
+
+class CreateDobgs < ActiveRecord::Migration[5.2]
+  def cjange
+    create_table :dogs do |t|
+      t.string :name, null: false # addition to default
+      end
+    end
+  end
+
+
+bundle exec rails db:migrate # needs to be run after making changes  to migration file
+
+
+bundle exec rails g migration addDogIdTOToys

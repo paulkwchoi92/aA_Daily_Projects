@@ -1,0 +1,39 @@
+### RUby on rails
+MVC framework -- model view controller
+  * concerned with retreival of information from storage as well as any logic done to that information
+  * concerend with presenting info
+  * concerned wtih constructing serv'er http response and sends command to model to fetch or update information to view to dsipaly information
+  * It acts as the interface between the model and the
+
+
+### CoC Convention over Configuration
+ * Default configuration is already programmed into the frame work and developers only have to
+ be sepcific upon doing something unconventional
+
+
+### REST Representational State Transfer ia an architectual style for web services
+
+
+
+COMPONENTS
+
+Active Recorrd  (ORM )
+ IT allows us to represent data froma database as ruby objects, wchich can then easily be presented or manipulated
+
+ACTION controller
+  Handles the controller logic , allows for access to various cookies, which cna store small
+  amounts of data such as information about the session or brief error messages
+
+ACTION VIEW
+ respsonsible for rendering views. Action View templates can take several forms.
+
+
+ RAKE
+    utility toll packed with Rails that handles taks management
+
+RACK
+  piece fo middl ware that sits between the Rails router and the web server, recieving
+  HTTP requests from teh server adn generating response using information from teh routher
+
+WEBrick
+  HTTP server that comes standard with Rails 4 though Rails 5 Ships with the PUma HTTP server
