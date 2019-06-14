@@ -1,0 +1,71 @@
+how to join on rails
+
+User.join("JOIN bleats On bleats.autho_id = user.id")
+
+how to group on rails
+
+User.group("users.id")
+
+how to use Havings
+
+User.having("Count(bleats.id) >= 2")
+
+
+### put together
+
+
+User
+  .join("JOIN bleats On bleats.autho_id = user.id")
+  .group("users.id")
+  .having("Count(bleats.id) >= 2")
+
+
+  using joined with active record methods
+
+  if active recorrd has an ex. like
+
+
+  has_many :authored_bleats,
+    class_name: :Bleat
+    primary_key: :id,
+    foreign_key: :author_id
+
+  using
+
+  User.Join(:authored_bleast) will automatically connect User to Bleats based on primary key and foreign key
+  prvoided from :authored_bleats
+
+
+
+  #2 video
+
+  how to do nested joins
+
+
+
+  ex.
+
+   Locations
+    .left_outer_join(users: :authored_bleats) #pointing towards association to another associationg
+    .group(:id) #group by
+    .having("Count("bleats.id" >= 2))
+
+
+
+    How to use .include?
+
+    def self.Print_allbleats_by_locatins
+     #puts out all bleats by  author/location to console
+
+    Locations.includes(users: : authored_bleats).all.each do |location |
+      location.users.each do |user|
+        user.authored_bleats.each do |bleat|
+          puts "#{user.email} (#{location.name}): #{bleat.body}"
+        end
+      end
+    end
+
+
+    includes is basically saying grab all connections at the same time
+    rather than joining then iterating and the joinining and iterating again
+      # not really replacing join but querying all data at once.
