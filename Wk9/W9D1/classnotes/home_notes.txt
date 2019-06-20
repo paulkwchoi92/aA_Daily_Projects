@@ -1,0 +1,35 @@
+HTTP request / response
+
+# similiar to mailing a letter between clinet and server
+
+## HTTP Request methods
+  - get, put, patch, post, etc
+  - path = /user/4
+  - query ex. ?locSF.. # after evrything question mark
+  - body, in key value forms, filled out by parts
+
+## HTTP Response
+  - tells you what happens after the request
+  - status reports, in codes
+  - body, the
+
+## Rails routing
+  #routers - controllers
+  #ROUTERS
+    - cekcs routes for which controller
+    - trhen it will initialize a controller
+    - then it will call a right action
+  #Controllers ex.user controller
+   #fills out the right response to request
+   #
+
+## ROUTES
+ #uses dsl language ( domain specific langauge)
+ # get "name", to: 'controllername#methodname'
+  http method        controlelr stuff
+
+ # this can ben created with
+ RESTful
+ representation state transfer
+
+ resources :superheroes, only:[index, :show, :create, :update, :destroy]

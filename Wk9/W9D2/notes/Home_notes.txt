@@ -1,0 +1,47 @@
+##Callbacks
+
+# callbacks are methods that get called at certain momemnts of an object's life cycle.
+With it is possible to write a code that will run whenever an Active Record object is created, saved, updated,
+deleted, validated, or loaded
+
+## Relational Callback
+ ex.
+ class User < ApplicationRecord
+   has_many :posts, dependednt: :destroy
+end
+
+class Post < ApplicationRecord
+ belongs_to :user
+ end
+
+  # the #dependent: :destory is the relational callback method
+  # that will destory the posts if user is destoryed
+
+  # other options
+   # dependent: :nullify = instead of destroying, it will set all foreing key to null
+   # dependent: :restrict, which will cause an exception to be raised if there exits
+                associated objests; you'd have to destory the associated objects yourself.
+
+### Callback registrations
+   # call back methods can be hooked onto other model lifecycle events.
+   # these are implemented as ordinary methods and use a macro0-style class
+   #method to risger them as callbacks:
+
+   class User < ApplicationRecord
+  validates :random_code, presence: true
+  before_validation :ensure_random_code
+
+  protected
+  def ensure_random_code    # this is the call back method
+    # assign a random code
+    self.random_code ||= SecureRandom.hex(8)
+  end
+end
+
+
+
+#### Availabel Call backs
+
+#. before_validation = handy as a last chance to set forgottne fields
+# after_create = handy to do some post-create logic, like send a confirmation email
+# after_destroy = handy to perform post-destory clean-up logic
