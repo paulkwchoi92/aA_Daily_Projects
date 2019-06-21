@@ -1,0 +1,20 @@
+<h1> Creat an Account! </h1>
+
+<form action="users_url" method="POST">
+
+    <ul>
+        <% @user.errors.full_message.each do |message| %>
+        <li>
+            <%= message %>
+        </li>
+        <% end %>
+    </ul>
+    
+<label for="user_name"> Username </label>
+    <input type="email" 
+    value="<% @user.user_name %>"
+    name="user[user_name]"  
+    id="user_user_name"  
+    />
+</label>
+</form>

@@ -1,0 +1,374 @@
+### @ rails routes.rb
+
+ex.
+  resources :bleats
+  get "/get_cookie", to: "cookie_demos#get_cookie"
+  get "/set_cookie", to: "cookie_demos#set_cookie"
+
+end
+
+####@#@#@# What are cookies?
+ # bits of data that is left as a trace, like henzel & gretel
+
+ ## how to use cookies in rails
+ cookies is a cookiejar class
+ cookies.methods = will reveal the methods available for methods
+
+ ex.
+   resources :bleats
+   get "/get_cookie", to: "cookie_demos#get_cookie"
+   get "/set_cookie", to: "cookie_demos#set_cookie"
+
+ end
+
+
+ class CookieDemosController < ApplicationControlelr
+   def get_cookie
+     fail
+      render: get_cookie
+  end
+
+   def set_cookie
+     if params[:dog]
+       if cookies.signed[:dogs] #signed will encrypt the cookies with the masterkey & yml file inside rqils
+         dogs = JSON.parse(cookies.signed[:dogs])
+       else
+         dogs = []
+       end
+       dogs << params[:dogs]
+       cookies[:dogs] = dogs.to_json
+     end
+      cookies[:my_cookie] = "tommy" # accession elements in the cookie and setting it iunto something
+
+      session[:my_secret]= "you will never knoww"#session is a cookie that rails gives to keep track of session
+      render :plain "set the cookies successfully"
+   end
+
+  #can be checked at dev tools
+
+
+end
+
+@@@ inside cookies view folder
+
+   @ get_cooke.html.erb
+
+
+   <h1> Here is the Cookie </h1>
+
+   My Cookie: <%= cookies[:my_cookie] %>
+   <br/>
+   Dogs: <%= cookies.signed[:dogs]
+   <br/>
+   My secret: <%= session[:my_secret]%>
+
+
+
+###### flahs & flash.now
+
+class CookieDemosController < ApplicationControlelr
+  def get_cookie
+    fail
+     render: get_cookie
+ end
+
+  def set_cookie
+    if params[:dog]
+      if cookies.signed[:dogs] #signed will encrypt the cookies with the masterkey & yml file inside rqils
+        dogs = JSON.parse(cookies.signed[:dogs])
+      else
+        dogs = []
+      end
+      dogs << params[:dogs]
+      cookies[:dogs] = dogs.to_json
+    end
+     cookies[:my_cookie] = "tommy" # accession elements in the cookie and setting it iunto something
+
+      flash[:the_messege] = "hi from set coooki"
+
+     session[:my_secret]= "you will never knoww"#session is a cookie that rails gives to keep track of session
+     render :plain "set the cookies successfully"
+  end
+
+
+  flash.now when :render
+
+  flash when redirect
+
+
+  #### password
+
+  def password=(password) # because A.new(pass: apssword) is same thing as this method
+    self.password_digest = BCrypt::Password.create(password)
+  end
+
+  def self.find_by_credentials(email,password)
+    user = User.find_by(email: email)
+    return nil unless user && user.is_password?(password)
+    user
+  end
+
+  def is_password?(password)
+    bcrypt_password = BCrypt::Password.new(self.password_digest)
+    bcrypt_password.is_password?(password)
+  end
+
+  Creating an account
+
+  <h1> Createa and Accout</h1>
+
+  <form action = "<% users_url%>" method = "POST">
+
+    <ul>
+    <% @users.errors,full_message.each do |msg| %>
+        <li><%= msg %></li>
+        <%end%>
+        </ul>
+    <label for="user-email">Email</label>
+    <input type ="email"
+      name="user[email]"
+      id="user-=email"
+      value="<%@user.email%>" />
+
+
+  <label>
+    Location
+    <select name="user[location_id]">
+      <option>-</option>
+      <%Location.all.each do |location| %>
+        <option value="<%=location.id%>" <%= "selected" if @user.location_id == location.id>
+        <%= location.name %>
+        </option>
+        <% end %>
+        </select>
+        </label>
+
+        <label>
+        Password
+         <input type="password" name="user[password]" />
+        </label>
+        <input type="submit" value= "Create my free account!" />
+        </form>
+
+
+    @@ controllers
+
+    class User Controller
+
+      def new
+        @user = User.new
+        render :new
+
+      end
+
+      def creae
+        @user = User.new(user_params)
+         if@user.save
+           session[:current_user_id] = @user.id
+           flash[:success] = "welcome bleater@ account created succesffuly!"
+            redirec_to bleat_url
+          else
+            render :new, status: 422 # 422 because it didnt complete
+          end
+        end
+
+        private
+        def user_params
+          params.require(:user).permite(:email, :location_id, :password)
+        end
+
+      end
+
+##### find vs find_by
+
+  ## active record has different query methods
+   #find takes in only an :id number (primary_key)
+   # find_by can specify what column model we want to find by
+
+
+### inside lay out the html
+
+<body>
+<% if loggged_in? %>
+ current user ID: <%= sessions[:current_user_id].email %> << can be replaced as current_user.email
+ <form action="<%= session_url %>" method = "POST">  # log out option
+    <input type="hidden" name="_method" value = "Delete">
+    <input type="submit" value="log out">
+
+<%elsif  params[:controller] != 'sessions'%>
+  <a href="<% new_session_url %>" Log in!> </a>
+
+
+
+ <%end%>
+  <%= flash[:error] %>
+  <%= flash[:error] %>
+  <%= flash[:error] %>
+
+
+###### how to make certain methods available everuyweher
+
+
+inside appconroller model
+
+ helper_method :current_user
+  def current_user
+    return nil unless session[:session_token]
+    User.find(session_token: session[:session_token)
+  end
+
+  def logged_in?
+    !!current_user # since current user wil return logged in or nil
+     # !! is double negative on account is true
+     # !! on nil is false # this is used because account being returned doesnt evaluate to true
+  end
+
+
+  #### sessions controller
+
+  @ routes
+
+  resource :session # singular resouce, can only be one, no need for id to idenity amnything
+                    # even though resource is singular controllers wil always be plural
+
+@@@ controllers
+
+
+ class SessionsController <ApplicationControlelr
+   def new
+     render :new
+   end
+
+
+
+
+   def create  ## creating a session means loggins them in
+     user = User.find_by_credential ( params[:email],
+     params[:password])
+
+
+
+     if user
+      session[:seesion_token] = user.reset_session_token # rest session token in order to start fresh every session
+      flas[:success] = "Logged in successfully, welcome Back!"
+      redirect_to bleats_url
+    else
+      flash[:error] = "Wrong email/password combo"
+      fender :new, status: 401
+    end
+   end
+
+   def destory ## this is to log out
+
+     curret_user.reset_session_token! # resetting session token
+     session[:session_token] = nil  #setting it nil (logged out)
+     flash:[:success] = "Logged out! successfully"
+     redirect_to belats_url
+   end
+
+ end
+
+
+ ### inside view folder
+   # create view.html.erb file
+
+
+<h1> Log in </h>
+
+
+  <form action= " <%session_url %>" method "POST">
+
+    <label>
+      Email
+      <input type="email" name= "email "> #helps with putting in email
+      </label>
+
+      <label>
+      Password
+      <iput type="password" name= "password" / >
+      </label>
+
+      <input type="submit">
+
+
+    </form>
+
+
+
+    @@@@ user.model
+      def reset_session_token!@
+        self.udpate!(session_token: self.calss.benerate_session_token)
+        self.session_tokken
+
+      end
+
+
+#####@@@@@ authorization
+
+
+@@@ bleats controller
+
+
+before_actions :ensure_user_logged_in, only: [:create, :new, :edit, :destory]  # methods that needs to be called before any action insice the pertaining
+    #controller ,, #only specifies it only fucntions at create and other listed
+
+    def ensure_user_logged_in
+      unless logged_in?
+        flash[:error] = "must be logged in"
+        redierct_to new_session_url
+      end
+    end
+ def create
+   # @bleat = Bleat.new(bleat_params)
+   # @#bleat.author_id = current_user.id
+
+   @bleat = current_user.authored_bleats.new(bleat_params)
+
+
+
+
+   private
+
+   def bleat_params
+     params.require(:bleat).permit(:body) # if the permit pertains to a form, what ever gets deleted in
+      #the permit must be deleted at the form
+
+  #### CSRF Attack & Protection ( Cross site request forgery attacks)
+
+  # what is a CSRF?
+    # when one website displays a form to make a request to another website.
+
+
+ex .
+ 1. foreign webiste has the following form to attak belat
+
+ <<-HTML
+  <form action="http:/bleater.com/beats" method =" POST" >
+    <input type="hidden" name ="bleat[body]" value= "All my secfets!!">
+    <button> Win $10-00000000 </button>
+    </form>
+
+  HTML
+
+   # this form when clicked on by someone whos logged in and has bleats opened will results in
+   #following throught the form
+
+   # in every form that is not a get requeset, because get request only
+   "views data"
+
+   # add this line
+   <input type="hidden" name="authenticity_token" value"<%= form_authenticity_token %>" >
+
+
+
+   ### helper methods  an go to modules >> helper methods
+
+## this is a easier way to implement the above protectionline into different view folders
+   def auth_token
+     <<-HTMl.html_safe # reminds the computer tht it's not an attack
+      <input type ="hidden"
+      name="authenticity_token"
+      value="#{ form_authenticity_token}"/>
+      HTML
+
+    end

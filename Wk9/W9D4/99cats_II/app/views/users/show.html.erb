@@ -1,0 +1,4 @@
+<h1> Hi, <%=@user.user_name%> !</h1>
+
+<% @user.each do |user| %>
+<p> account created: <%= user.created_at%> </p>
