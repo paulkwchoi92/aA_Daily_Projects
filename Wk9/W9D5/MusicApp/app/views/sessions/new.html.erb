@@ -1,0 +1,16 @@
+<h1> Log in! </h1>
+  <form action="<%session_url%>" method = "POST">
+        <%# action points to the url, method post to the actions %>
+        <%# this will call on the create method which will take in
+        the email and password %>
+        <label>Email
+        <input type="email" name ="email">
+        </label>
+
+        <label>Password
+            <input type="password" name="password"/>
+        </label>
+
+        <input type="submit" value="Enter">
+            
+    </form>
