@@ -1,0 +1,16 @@
+<h2><%=@sub.title%></h2>
+<form action="<%=sub_url(@sub)%>" method="post">
+    <input
+    type="hidden" name="authenticity_token"
+    value="<%= form_authenticity_token%>">
+    <input type="hidden" name="_method" value="patch">
+
+
+
+<label for="sub_description">Description</label>
+<input type="text" name="sub[description]" value="<%=@sub.description %>">
+
+<input type="submit" value="Save sub!">
+
+<a href="<%=sub_url(@sub)%>">Back to sub</a>
+</form>

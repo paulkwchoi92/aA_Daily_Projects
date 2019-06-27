@@ -1,0 +1,20 @@
+<h1>Here are your Subscribed topics</h1>
+
+<ul>
+    <%@subs.each do |sub|%>
+    <li><a href="<%=sub_url(sub)%>"><%=sub.title%></li></a>   
+    <%end%>
+</ul>
+
+
+<br>
+<label> Subs You Mangage</label>
+<ul>
+    <%@subs.each do |sub|%>
+    <%if sub.user_id == current_user.id%>
+    <li><a href="<%=sub_url(sub)%>"><%=sub.title%></li></a>
+        <%end%>
+    <%end%>
+</ul>
+
+<a href="<%=new_sub_url%>">Create a new Sub!</a>
