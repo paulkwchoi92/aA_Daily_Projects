@@ -1,0 +1,49 @@
+.ttt{
+    width:280px;
+}
+
+ul {
+    list-style: none;
+    display:flex;
+    flex-wrap: wrap;
+}
+
+ul > li {
+    width:72px;
+    height:85px;
+    text-align: center;
+    border:1px solid black; /* width style color */
+    background-color:grey;
+}
+
+ul > li:hover{
+    background-color:yellow;
+}
+
+
+.o {
+  background: white;
+  cursor: default;
+}
+
+.x:hover,
+.o:hover {
+  background: white;
+}
+
+.x:after,
+.o:after {
+  display: block;
+  width: 100%;
+  font-size: 200x;
+  line-height: 80px;
+}
+
+.x:after {
+  content: "x";
+ 
+}
+
+.o:after {
+  content: "o";
+}
