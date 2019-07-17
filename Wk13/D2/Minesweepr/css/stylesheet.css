@@ -1,0 +1,52 @@
+/* In addition, let's start applying some CSS. Change your render method to return a div with the text calculated above. Give all of your tile divs a class of 'tile' using the className prop. Also add a bombed, revealed, or flagged class as appropriate. Use CSS to style your tiles and make your board beautiful. Hint: use border-style: inset; and border-style: outset; to achieve the 3D tile effect for revealed tiles.
+
+
+After you've finished with the CSS, write a handleClick function for the Tile component, and pass it to the component's rendered div using onClick. Have this call the updateGame function we passed as a property, passing the plain javascript tile object and a boolean for whether the user is flagging or revealing the tile as arguments. (You might note that our Game's updateGame function doesn't take any arguments yet – we'll fix that shortly). */
+h1 { 
+    text-align: center;
+}
+.board{
+    display:block;
+    width: 230px; 
+    height: 230px;
+    align-content: center;
+    margin: 0 auto;
+}
+
+.tile {
+   width: 20px;
+   height: 20px; 
+   /* border-style: inset;  */
+   border-style: outset;
+   display: flex;
+   float: left;
+   margin:0;
+}
+
+.bombed {
+   width: 20px;
+   height: 20px; 
+   border-style: inset; 
+   border-style: outset;
+   display: flex;
+   float: left;
+   margin:0;
+   background-color: red;
+}
+
+.flagged {
+   width: 20px;
+   height: 20px; 
+   /* border-style: inset;  */
+   border-style: outset;
+   display: flex;
+   float: left;
+   margin:0;
+   background-color: pink;
+}
+
+.explored {
+  border-style: inset; 
+  background-color: grey;
+
+}

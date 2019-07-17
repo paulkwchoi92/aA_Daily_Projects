@@ -1,0 +1,17 @@
+#root {
+  font-family: 'Russo One', sans-serif;
+}
+
+h1 {
+    display: flex;
+    justify-content: flex-start;
+}
+
+h2 {
+
+   display: flex;
+   justify-content: flex-end; 
+}
+.clockspace {
+    background-color: rgb(177, 194, 215);
+}
