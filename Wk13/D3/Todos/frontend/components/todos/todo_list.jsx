@@ -1,6 +1,30 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import TodoListItem from "../todo_list/todo_list_item";
+import TodoForm from "../todo_list/todo_form"
+import receiveTodo from "../../actions/todo_actions"
 
-export const TodoList = () => <h3>Todo List goes here!</h3>
+class TodoList extends React.Component {
+  constructor(props) {
+      super(props);
+    //   debugger
+  }
 
-// how do we import this to todo_list?
+  render() {
+    // debugger
+    let arr = this.props.todos;
+    // debugger
+    return (
+      <div>
+            <TodoForm receiveTodo={this.props.receiveTodo}/>
+        <ul>
+          {arr.map(todo => {
+            return <TodoListItem todo={todo} key={todo.id} />;
+          })}
+        </ul>
+      </div>
+    );
+  }
+}
+
+export default TodoList;

@@ -23,7 +23,7 @@ const newTodos = [
    {id: 1, title:"something" },
     { id: 2, title: "test " }
 ]
-const todosReducer = (state = {}, action ) => {
+const todosReducer = (state = initialState, action ) => {
   // debugger
     switch (action.type) {
         case RECEIVE_TODOS: 
@@ -36,11 +36,12 @@ const todosReducer = (state = {}, action ) => {
             })
             
       return newState1;
-    case RECEIVE_TODO: 
+      case RECEIVE_TODO: 
+        debugger 
           const newState = merge(
               {},
-              state.todos,
-              action.todo);
+              state,
+            { [action.todo.id]: action.todo });
           return newState;             
     default:
       return state;
