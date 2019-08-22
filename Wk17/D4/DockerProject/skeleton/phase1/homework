@@ -1,0 +1,13 @@
+
+#  Here I'm using the Alpine version of my current node version
+# Again, the Alpine implementation of node will be more lightweight but take up less space
+
+FROM node:11.0.0-alpine
+
+#  if this directory doesn't exist Docker will make it for us within the container
+WORKDIR /app
+
+
+COPY server.js /app
+
+CMD ["node", "server.js"]
