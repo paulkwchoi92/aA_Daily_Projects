@@ -1,0 +1,37 @@
+docker container run --name Container1 -p 80:80 nginx
+
+docker container run --name quotes alpine
+
+docker container run --name httpd -p 81:80 httpd
+
+docker container run -d --name mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=12341234 mysql 
+
+docker container run -it --name nginx nginx bash  // starting and getting into container, containewr will stop running upo0n exit
+
+exit // getting out of container1`
+
+docker container exec -it nginx bash // getting back into container, container will keep going
+
+docker container exec -it --name ubuntu ubuntu bash
+
+docker container run -it --name ubuntu ubuntu bash // installin and running ubuntu 
+
+ -->    apt get update // updates the built in package manager for ubuntu
+ 
+-->  apt-get install -y curl  // downloads curl 
+
+--> curl parrot.live // checking if curl is running
+
+docker container run -it --name notliketheother ubuntu bash  //testing to see if the other container with ubuntu will have same assets installed
+
+// outside of container
+while :
+do
+    wget -qO- http://quotesondesign.com/wp-json/posts
+    printf '\n'
+    sleep 5s
+done
+
+docker container run -d --net network --net-alias group1 elasticsearch:2 
+
+docker container run -d centos curl -s group1:9200
