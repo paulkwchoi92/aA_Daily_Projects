@@ -1,0 +1,27 @@
+
+FROM node:8.15-alpine as build-stage
+
+WORKDIR /app
+COPY . /app
+
+RUN npm install \
+    && npm start
+
+FROM nginx:1.15
+
+EXPOSE 80
+
+COPY --from=build-stage /app /usr/share/nginx/html
+
+HEALTHCHECK CMD curl --fail http://localhost:80/ || exit 1
+
+
+
+####
+To ensure a HealthCheck is running properly you will always need your container to fail by having it exit 1 or return false.
+
+docker container run --name p2 -d --health-cmd="pg_isready -U postgres || exit 1" postgres 
+
+
+
+
