@@ -16,7 +16,7 @@
     "@babel/preset-react": "^7.0.0",
     "babel-loader": "^8.0.6",
     "install": "^0.13.0",
-    "lodash": "^4.17.14",
+    "lodash": "^4.17.19",
     "npm": "^6.10.1",
     "package1": "0.0.0",
     "package2": "^1.0.0",
